@@ -8,6 +8,10 @@ All credit for the mod goes to its original author, **[Gaura](https://github.com
 2. Put it in your `mods` folder, together with [Fabric API](https://modrinth.com/mod/fabric-api) 0.161.0+26.2 or newer.
 3. Requires Minecraft **26.2**, Fabric Loader **0.19.5+** and Java 25. Optional: works with Sodium 0.9 and Iris 1.11.4.
 
+### Found a bug?
+
+Report it on this fork: open the [Issues tab](https://github.com/signup098ezxs/MiningAndPlacingAnimations/issues), click **New issue**, choose **Bug report (26.2 port)**, and attach your `logs/latest.log`. Please don't report it to the original project.
+
 ### What's in this port
 
 - Updated to Minecraft 26.2's new rendering system (Fabric only).

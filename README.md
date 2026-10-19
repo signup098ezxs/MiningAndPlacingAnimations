@@ -20,6 +20,20 @@ This is an **unofficial port** of [Mining & Placing Animations](https://github.c
 - [Fabric API](https://modrinth.com/mod/fabric-api) 0.161.0+26.2 or newer
 - Optional: Sodium 0.9 and Iris 1.11.4 for 26.2 are supported
 
+## Reporting bugs
+
+Found a problem with this 26.2 port? Please report it **here, on this fork**, not on the original project:
+
+1. Go to this fork's [**Issues** tab](https://github.com/signup098ezxs/MiningAndPlacingAnimations/issues)
+   (you need a free GitHub account).
+2. Click **New issue** and choose **Bug report (26.2 port)**.
+3. Fill in the form: what happened, how to make it happen again, your versions and other mods.
+4. Attach `logs/latest.log` from your Minecraft folder, or the file from `crash-reports/` if the game crashed.
+   Screenshots or a short video help a lot for animation problems.
+
+Before reporting, it helps to check whether the bug still happens with **only this mod and Fabric API**
+installed, and whether someone has already reported it in the Issues list.
+
 ## Building
 
 ```sh
