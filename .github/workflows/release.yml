@@ -1,6 +1,7 @@
 # On every push to the 26.2 branch: if there is no GitHub Release yet for the
 # mod_version in gradle.properties, build the mod and publish one with the jar
 # attached (much easier to download than workflow artifacts).
+# If the release already exists, its notes are refreshed from .github/RELEASE_NOTES.md.
 # To publish an update, bump mod_version in gradle.properties and push.
 
 name: release
@@ -30,6 +31,11 @@ jobs:
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: refresh notes of the existing release
+        if: steps.version.outputs.exists == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "${{ steps.version.outputs.tag }}" --notes-file .github/RELEASE_NOTES.md
       - name: validate gradle wrapper
         if: steps.version.outputs.exists == 'false'
         uses: gradle/actions/wrapper-validation@v6
