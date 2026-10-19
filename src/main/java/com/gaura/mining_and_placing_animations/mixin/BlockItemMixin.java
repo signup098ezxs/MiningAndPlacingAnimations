@@ -26,7 +26,7 @@ public class BlockItemMixin {
 
             if (animationModel != null) {
 
-                BlockAnimationManager.addAnimation(clientLevel, blockPos, blockState, animationModel);
+                BlockAnimationManager.addAnimation(clientLevel, blockPos, blockState, animationModel, false);
             }
         }
     }

@@ -1,5 +1,6 @@
 {
   "duration": 0.15,
+  "easing": "ease_out",
   "pivot_point": [0.5, 1.0, 0.5],
   "keyframes": [
     {

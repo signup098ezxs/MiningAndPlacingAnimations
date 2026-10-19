@@ -25,12 +25,33 @@ public class BlockAnimationManager {
     // Read from chunk-meshing worker threads, so it must be thread-safe.
     private static final Set<BlockPos> INVISIBLE_BLOCKS = ConcurrentHashMap.newKeySet();
 
-    public static void addAnimation(ClientLevel clientLevel, BlockPos blockPos, BlockState blockState, AnimationModel animationModel) {
+    // Block.UPDATE_IMMEDIATE (8): asks the renderer to rebuild the chunk right away, when the
+    // "Chunk Updates" video setting allows it, so the real block disappears/reappears without a gap.
+    private static final int UPDATE_IMMEDIATE = 8;
+
+    public static void addAnimation(ClientLevel clientLevel, BlockPos blockPos, BlockState blockState, AnimationModel animationModel, boolean loopable) {
 
         BlockPos pos = blockPos.immutable();
 
-        ANIMATED_BLOCKS.put(pos, new BlockAnimation(clientLevel, pos, blockState, animationModel));
+        ANIMATED_BLOCKS.put(pos, new BlockAnimation(clientLevel, pos, blockState, animationModel, loopable));
         setBlockInvisible(clientLevel, pos, blockState);
+    }
+
+    /**
+     * Keeps a looping (mining) animation running while the player is still mining the block.
+     * @return true if there was a loopable animation to keep alive
+     */
+    public static boolean keepAlive(BlockPos blockPos) {
+
+        BlockAnimation blockAnimation = ANIMATED_BLOCKS.get(blockPos);
+
+        if (blockAnimation != null && blockAnimation.isLoopable()) {
+
+            blockAnimation.keepAlive();
+            return true;
+        }
+
+        return false;
     }
 
     public static void removeAnimation(ClientLevel clientLevel, BlockPos blockPos, BlockState blockState) {
@@ -130,6 +151,6 @@ public class BlockAnimationManager {
     private static void updateBlock(ClientLevel clientLevel, BlockPos blockPos, BlockState blockState) {
 
         // Marks the section dirty so it is re-meshed with/without the block.
-        clientLevel.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_CLIENTS);
+        clientLevel.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_CLIENTS | UPDATE_IMMEDIATE);
     }
 }

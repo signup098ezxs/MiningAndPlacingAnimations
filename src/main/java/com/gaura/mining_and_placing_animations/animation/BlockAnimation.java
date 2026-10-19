@@ -19,10 +19,13 @@ public class BlockAnimation {
     private final BlockState blockState;
     private final AnimationModel animationModel;
     private final MovingBlockRenderState movingBlockRenderState;
+    private final boolean loopable;
+    private int ticksSinceKeepAlive;
 
-    public BlockAnimation(ClientLevel clientLevel, BlockPos blockPos, BlockState blockState, AnimationModel animationModel) {
+    public BlockAnimation(ClientLevel clientLevel, BlockPos blockPos, BlockState blockState, AnimationModel animationModel, boolean loopable) {
 
         this.clientLevel = clientLevel;
+        this.loopable = loopable;
         this.age = 0;
         this.lifetime = Math.max(1, (int) Math.ceil(animationModel.duration * 20));
         this.alive = true;
@@ -41,9 +44,25 @@ public class BlockAnimation {
         this.movingBlockRenderState.lightEngine = clientLevel.getLightEngine();
     }
 
+    /**
+     * Called every tick the player keeps mining this block, so the animation loops seamlessly
+     * instead of putting the real block back and re-hiding it (which caused a flicker on every loop).
+     */
+    public void keepAlive() {
+
+        this.ticksSinceKeepAlive = 0;
+    }
+
     public void tick() {
 
         this.age++;
+        this.ticksSinceKeepAlive++;
+
+        if (this.loopable && this.age >= this.lifetime && this.ticksSinceKeepAlive <= 2) {
+
+            this.age = 0;
+            return;
+        }
 
         if (this.age == this.lifetime) {
 
@@ -71,6 +90,11 @@ public class BlockAnimation {
     public float getProgress(float partialTick) {
 
         return Math.min(1.0F, (this.age + partialTick) / this.lifetime);
+    }
+
+    public boolean isLoopable() {
+
+        return this.loopable;
     }
 
     public AnimationModel getAnimationModel() {

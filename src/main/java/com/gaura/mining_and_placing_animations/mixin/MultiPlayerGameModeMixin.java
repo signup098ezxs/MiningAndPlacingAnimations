@@ -39,16 +39,24 @@ public class MultiPlayerGameModeMixin {
 
         ClientLevel clientLevel = this.minecraft.level;
 
-        if (clientLevel != null && !BlockAnimationManager.isBlockInvisible(blockPos)) {
+        if (clientLevel == null) {
 
-            BlockState blockState = clientLevel.getBlockState(blockPos);
+            return;
+        }
 
-            AnimationModel animationModel = AnimationResourceManager.getAnimationModel(AnimationResourceManager.getMiningAnimationId(blockState));
+        if (BlockAnimationManager.isBlockInvisible(blockPos)) {
 
-            if (animationModel != null) {
+            BlockAnimationManager.keepAlive(blockPos);
+            return;
+        }
 
-                BlockAnimationManager.addAnimation(clientLevel, blockPos, blockState, animationModel);
-            }
+        BlockState blockState = clientLevel.getBlockState(blockPos);
+
+        AnimationModel animationModel = AnimationResourceManager.getAnimationModel(AnimationResourceManager.getMiningAnimationId(blockState));
+
+        if (animationModel != null) {
+
+            BlockAnimationManager.addAnimation(clientLevel, blockPos, blockState, animationModel, true);
         }
     }
 }
