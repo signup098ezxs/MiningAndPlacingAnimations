@@ -26,8 +26,10 @@ This is an **unofficial port** of [Mining & Placing Animations](https://github.c
 ./gradlew build
 ```
 
-The mod jar is written to `build/libs/`. Every push to this fork also builds it on GitHub Actions
-(Actions tab → latest run → *Artifacts*).
+The mod jar is written to `build/libs/`.
+
+**Downloads:** ready-made jars are on this fork's [Releases page](https://github.com/signup098ezxs/MiningAndPlacingAnimations/releases).
+A new release is published automatically when `mod_version` in `gradle.properties` is bumped and pushed.
 
 ## Changes from the original (GPL-3.0 §5 notice)
 
